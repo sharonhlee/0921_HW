@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>NYT Coverage</title>
+    <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+</head>
+
+<body>
+    <h1>New York Times Coverage</h1>
+    <!-- REF:IN CLASS 9/14 SLIDES -->
+    <form id="nytSearch" action="http://api.nytimes.com/svc/search/v2/articlesearch.json" method="get">
+        Search:
+        <input id="q" type="text" name="q" />
+        <!-- SEARCH -->
+        <br> Year(1831 to current year):
+        <input id="year" type="number" name="year" min="1831" max="2016" value=2016 />
+        <!-- YEAR -->
+        <br>
+        <input id="apikey" type="hidden" name="32bc1bcdf69f07f2adcd6129af469c3b%3A13%3A71691949" />
+        <!-- API KEY -->
+        <input type="hidden" name="mode" value="html">
+        <br>
+        <input type="submit" />
+    </form>
+    <br>
+    <div id="staticjson"></div>
+    <!-- TO MOVE INTO SEPARATE JAVASCRIPT FILE -->
+    <script type="text/javascript">
+
+    $('#q').focus();
+
+    $('form').on('submit', handleSubmit);
+
+    function handleSubmit(event) {
+        //prevent form submission
+        event.preventDefault();
+        var formData = {
+            'q': $('#q').val(),
+            'begin_date': $('#year').val() + "0101",
+            'end_date': $('#year').val() + "1231",
+            'api-key': $('#apikey').val()
+        };
+        console.log(formData);
+
+        $.ajax({
+            url: 'http://api.nytimes.com/svc/search/v2/articlesearch.json',
+            method: 'GET',
+            data: formData
+        }).done(function(data) {
+
+            var articleTitles = "";
+            var num;
+
+            num = data.response.meta.hits; //number of articles
+            console.log(num);
+            if (num==0){
+                var string="Seems like you searched for an unpopular topic..."
+                logToConsole(string);
+            }else if (num<10){
+                for (i = 0; i < num.length; i++) { //headlines
+                    articleTitles += data.response.docs[i].headline.main + "<br>";
+                };
+                dataString($('#q').val(), num, articleTitles, logToConsole);
+            }else{
+                for (i = 0; i < 10; i++) { //headlines
+                    articleTitles += data.response.docs[i].headline.main + "<br>";
+                };
+
+                dataString($('#q').val(), num, articleTitles, logToConsole);
+            };
+            //console.log(articleTitles);
+
+        }).fail(function(err) {
+            logToConsole("There's been an error!");
+        });
+    };
+
+    function dataString(searchterm, hits, exTitles, callback) {
+        // console.log(searchterm);
+        // console.log(exTitles);
+
+        var str = "<span id='str1'><span>"+ hits + '</span> stories about <span>"'+ searchterm + '</span>" in ' + $('#year').val() + "!</span><br><br>Here's what some of those headlines looked like:<br><br>" + exTitles;
+
+        callback(str);
+    };
+
+    function logToConsole(jsonData) {
+        appendToDOM(jsonData);
+    };
+
+    function appendToDOM(info) {
+        document.getElementById("staticjson").innerHTML = info;
+    };
+    </script>
+</body>
+
+</html>

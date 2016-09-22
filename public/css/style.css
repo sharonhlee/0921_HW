@@ -1,0 +1,64 @@
+
+*{
+	font-family: 'Quicksand', sans-serif;
+	color:black;
+	background-color:rgb(234,199,128);
+	font-size:40px;
+}
+
+span{
+	font-weight: bold;
+	font-size:36px;
+	color:white;
+}
+#str1{
+	font-size:28px;
+}
+
+#staticjson{
+	line-height:100%;
+	font-size:18px;
+	color:rgb(0,60,113);
+}
+
+body{
+	align-content: center;
+	text-align: center;
+	margin:50px 0 50px 0;
+	padding:auto;
+}
+
+input:focus{
+	outline:none;
+	color:rgba(77,173,255,.8);
+}
+#q, #year{
+	color:rgba(77,173,255,.8);
+}
+
+input[type=submit]{
+	font-size:34px;
+	background-color:none;
+	border:3px solid rgba(77,173,255,.8);
+	color:rgba(77,173,255,.8);
+	border-radius:10px;
+	cursor: pointer;
+}
+
+input[type=submit]:hover{
+	background-color:rgba(77,173,255,.8);
+	color:rgb(234,199,128);
+	transform:scale(.9);
+	-webkit-transition: all .5s ease;
+  	-moz-transition: all .5s ease;
+  	-o-transition: all .5s ease;
+  	-ms-transition: all .5s ease;
+  	transition: all .5s ease;
+}
+input[type=text]{
+	border:none;
+}
+input[type=number]{
+	border:none;
+}
+
